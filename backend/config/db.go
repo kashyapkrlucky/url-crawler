@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/kashyapkrlucky/url-crawler/backend/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -34,4 +35,7 @@ func ConnectDB() {
 
 	DB = database
 	fmt.Println("✅ Database connected")
+
+	database.AutoMigrate(&models.Url{})
+
 }

@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/kashyapkrlucky/url-crawler/backend/controllers"
 )
 
 func RegisterRoutes(r *gin.Engine) {
@@ -10,4 +11,10 @@ func RegisterRoutes(r *gin.Engine) {
 			"status": "UP",
 		})
 	})
+
+	api := r.Group("/api")
+	{
+		api.POST("/add-url", controllers.AddUrl)
+		api.GET("/urls", controllers.GetUrls)
+	}
 }
