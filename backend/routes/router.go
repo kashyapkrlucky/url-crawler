@@ -16,5 +16,7 @@ func RegisterRoutes(r *gin.Engine) {
 	{
 		api.POST("/add-url", controllers.AddUrl)
 		api.GET("/urls", controllers.GetUrls)
+		api.POST("/start-crawl/:id", controllers.StartCrawl)
+		api.POST("/stop-crawl/:id", controllers.StopCrawl)
 	}
 }

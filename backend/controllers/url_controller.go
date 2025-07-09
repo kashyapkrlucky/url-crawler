@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kashyapkrlucky/url-crawler/backend/config"
 	"github.com/kashyapkrlucky/url-crawler/backend/models"
+	"github.com/kashyapkrlucky/url-crawler/backend/services"
 )
 
 func AddUrl(c *gin.Context) {
@@ -90,4 +91,44 @@ func GetUrls(c *gin.Context) {
 		"hasNext": int64(offset+limitInt) < total,
 		"hasPrev": pageInt > 1,
 	})
+}
+
+func StartCrawl(c *gin.Context) {
+	id := c.Param("id")
+	var url models.Url
+
+	if err := config.DB.First(&url, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "URL not found"})
+		return
+	}
+
+	url.Status = "processing"
+	config.DB.Save(&url)
+
+	if err := services.CrawlURL(&url); err != nil {
+		url.Status = "error"
+		config.DB.Save(&url)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, url)
+}
+
+func StopCrawl(c *gin.Context) {
+	id := c.Param("id")
+
+	var url models.Url
+	if err := config.DB.First(&url, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "URL not found"})
+		return
+	}
+
+	url.Status = "stopped"
+	if err := config.DB.Save(&url).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Crawl stopped", "url": url})
 }
