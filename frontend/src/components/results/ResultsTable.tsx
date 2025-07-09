@@ -27,7 +27,7 @@ const ResultsTable: React.FC<ResultsTableProps> = ({
 }) => {
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full border-collapse border border-gray-300">
+      <table className="min-w-full border-collapse border border-gray-300 text-sm bg-white rounded-md shadow-sm">
         <thead>
           <tr>
             {[

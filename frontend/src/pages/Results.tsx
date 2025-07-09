@@ -5,7 +5,7 @@ import SearchBox from "../components/results/SearchBox";
 import FiltersBar from "../components/results/FiltersBar";
 import ResultsTable from "../components/results/ResultsTable";
 import PaginationControls from "../components/results/PaginationControls";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 
 interface UrlData {
   id: number;
@@ -100,24 +100,24 @@ const ResultsPage: React.FC = () => {
 
   return (
     <Layout>
-      <h1 className="text-2xl font-bold mb-4">Crawl Results</h1>
-
-      <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-
-      <FiltersBar filters={filters} onFilterChange={handleFilterChange} />
-
-      <ResultsTable
-        urls={paginatedUrls}
-        sortKey={sortKey}
-        sortOrder={sortOrder}
-        onSort={handleSort}
-      />
-
-      <PaginationControls
-        currentPage={currentPage}
-        pageCount={pageCount}
-        onPageChange={setCurrentPage}
-      />
+      <div className="max-w-6xl mx-auto flex flex-col gap-4">
+        <h1 className="text-2xl font-bold">Crawl Results</h1>
+        <div className="flex flex-col lg:flex-row gap-4 h-16 bg-white shadow-sm rounded-sm p-2">
+          <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <FiltersBar filters={filters} onFilterChange={handleFilterChange} />
+          <PaginationControls
+            currentPage={currentPage}
+            pageCount={pageCount}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+        <ResultsTable
+          urls={paginatedUrls}
+          sortKey={sortKey}
+          sortOrder={sortOrder}
+          onSort={handleSort}
+        />
+      </div>
     </Layout>
   );
 };

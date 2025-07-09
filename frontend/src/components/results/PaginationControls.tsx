@@ -12,19 +12,19 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   onPageChange,
 }) => {
   return (
-    <div className="flex justify-center mt-4 gap-2">
+    <div className="flex justify-center gap-2">
       <button
-        className="px-3 py-1 border rounded disabled:opacity-50"
+        className="px-3 py-1 bg-blue-600 text-white rounded disabled:opacity-50"
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
       >
         Prev
       </button>
-      <span className="px-3 py-1 border rounded">
+      <span className="px-3 py-1 border border-gray-300 rounded w-25 flex items-center text-sm">
         Page {currentPage} of {pageCount}
       </span>
       <button
-        className="px-3 py-1 border rounded disabled:opacity-50"
+        className="px-3 py-1 bg-blue-600 text-white rounded disabled:opacity-50"
         disabled={currentPage === pageCount}
         onClick={() => onPageChange(currentPage + 1)}
       >

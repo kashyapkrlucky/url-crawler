@@ -1,5 +1,5 @@
 import React from "react";
-import { Loader, Play, Square, ExternalLink, Eye } from "lucide-react";
+import { Loader, Play, Square, Eye } from "lucide-react";
 
 export interface UrlEntry {
   id: number;
@@ -24,7 +24,7 @@ const UrlRow: React.FC<UrlRowProps> = ({
   onView,
 }) => {
   return (
-    <div className="flex items-center justify-between border-b py-3 px-2 hover:bg-gray-50">
+    <div className="flex items-center justify-between border-b border-gray-300 p-4 hover:bg-gray-50">
       <a
         href={entry.url}
         target="_blank"

@@ -17,7 +17,7 @@ const UrlTable: React.FC<UrlTableProps> = ({
   onView,
 }) => {
   return (
-    <div className="bg-white border rounded shadow w-full max-w-3xl mx-auto">
+    <div className="bg-white border border-gray-300 rounded shadow w-full">
       {urls.length === 0 ? (
         <div className="p-4 text-gray-500 text-sm">No URLs added yet.</div>
       ) : (

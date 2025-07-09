@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "../lib/axios";
+import axios from "../../lib/axios";
 
 interface UrlFormProps {
   onSuccess: (addedUrls: any) => void;
@@ -38,18 +38,15 @@ const UrlForm: React.FC<UrlFormProps> = ({ onSuccess }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white border rounded p-4 shadow w-full max-w-xl mx-auto mb-6"
-    >
+    <form onSubmit={handleSubmit} className="w-full mb-6 text-center ">
       <label className="block text-sm font-medium text-gray-700 mb-1">
-        Enter URL(s) (one per line):
+        Enter URL(s) (comma separated or one per line):
       </label>
       <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
         rows={3}
-        className="w-full border rounded px-3 py-2 text-sm font-mono focus:outline-none focus:ring focus:border-blue-500"
+        className="w-full bg-white shadow-sm rounded-xl p-6 font-mono focus:outline-blue-600 focus:ring"
         placeholder="https://example.com"
       />
       <button
@@ -57,7 +54,7 @@ const UrlForm: React.FC<UrlFormProps> = ({ onSuccess }) => {
         disabled={isSubmitting}
         className="mt-3 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
       >
-        {isSubmitting ? "Submitting..." : "Add URL(s)"}
+        {isSubmitting ? "Submitting..." : "Submit"}
       </button>
     </form>
   );

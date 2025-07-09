@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../components/Layout";
-import UrlForm from "../components/UrlForm";
-import UrlTable from "../components/UrlTable";
-import { type UrlEntry } from "../components/UrlRow";
+import React, { useState } from "react";
+import Layout from "../components/layout/index";
+import UrlForm from "../components/home/UrlForm";
+import UrlTable from "../components/home/UrlTable";
+import { type UrlEntry } from "../components/home/UrlRow";
 import axios from "../lib/axios";
 import { useNavigate } from "react-router-dom";
 
@@ -46,19 +46,33 @@ const Home: React.FC = () => {
 
   return (
     <Layout>
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">
-        Submit URLs for Crawling
-      </h2>
-      <UrlForm onSuccess={handleUrlsAdded} />
+      <div className="max-w-6xl mx-auto flex flex-col">
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+            Submit URLs for Crawling
+          </h2>
+          <p className="text-gray-700 mb-4">
+            This tool helps you analyze websites by crawling the URLs you
+            provide. Simply enter one or multiple web addresses below, and the
+            app will fetch key details like page title, HTML version, and
+            internal links count. Manage your crawls easily and explore detailed
+            insights for each URL.
+          </p>
+        </div>
 
-      <h3 className="text-lg font-medium mt-8 mb-3 text-gray-700">URL List</h3>
-      <UrlTable
-        urls={urls}
-        crawlingIds={crawlingIds}
-        onStart={handleStart}
-        onStop={handleStop}
-        onView={handleViewDetails}
-      />
+        <UrlForm onSuccess={handleUrlsAdded} />
+
+        <h3 className="text-lg font-medium mt-8 mb-3 text-gray-700">
+          URL List
+        </h3>
+        <UrlTable
+          urls={urls}
+          crawlingIds={crawlingIds}
+          onStart={handleStart}
+          onStop={handleStop}
+          onView={handleViewDetails}
+        />
+      </div>
     </Layout>
   );
 };
