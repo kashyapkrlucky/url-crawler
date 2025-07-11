@@ -33,7 +33,7 @@ const Header: React.FC = () => {
           </NavLink>
           <button
             onClick={handleLogout}
-            className="border-2 text-sm border-red-500 text-red-500 px-3 py-1 rounded hover:text-red-600"
+            className="text-sm bg-red-500 text-white px-4 py-1 rounded-sm cursor-pointer"
           >
             Logout
           </button>

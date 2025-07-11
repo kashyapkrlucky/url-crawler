@@ -25,7 +25,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
       const payload = isSignup
         ? { name, email, password }
         : { email, password };
-      const endpoint = isSignup ? "/api/signup" : "/api/signin";
+      const endpoint = isSignup ? "/register" : "/login";
 
       const { data } = await axios.post(endpoint, payload);
       login(data.token);
@@ -54,14 +54,14 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center px-4">
-      <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl">
+      <div className="bg-white w-full max-w-md p-12 rounded-lg shadow-sm">
         <div className="mb-6 text-center">
           <h1 className="text-3xl font-bold text-gray-900">
             {isSignup ? "Create your account" : "Welcome back"}
           </h1>
           <p className="text-gray-500 text-sm mt-1">
             {isSignup
-              ? "Sign up to start managing your websites."
+              ? "Sign up to start managing your links."
               : "Sign in to access your dashboard."}
           </p>
         </div>
@@ -71,7 +71,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
             <div>
               <label
                 htmlFor="name"
-                className="text-sm font-medium text-gray-700 flex items-center gap-1"
+                className="text-sm font-medium text-gray-500 flex items-center gap-1"
               >
                 <User size={16} /> Name
               </label>
@@ -79,7 +79,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
                 id="name"
                 required
                 type="text"
-                className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full mt-1 px-3 py-2 border border-gray-500 rounded-lg shadow-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -89,7 +89,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
           <div>
             <label
               htmlFor="email"
-              className="text-sm font-medium text-gray-700 flex items-center gap-1"
+              className="text-sm font-medium text-gray-500 flex items-center gap-1"
             >
               <Mail size={16} /> Email
             </label>
@@ -97,7 +97,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
               id="email"
               required
               type="email"
-              className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 px-3 py-2 border border-gray-500 rounded-lg shadow-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -106,7 +106,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
           <div>
             <label
               htmlFor="password"
-              className="text-sm font-medium text-gray-700 flex items-center gap-1"
+              className="text-sm font-medium text-gray-500 flex items-center gap-1"
             >
               <Lock size={16} /> Password
             </label>
@@ -114,7 +114,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
               id="password"
               required
               type="password"
-              className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 px-3 py-2 border border-gray-500 rounded-lg shadow-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -133,7 +133,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
             <button
               type="button"
               onClick={guestLogin}
-              className="w-full py-2 border border-gray-400 hover:bg-gray-100 text-gray-800 rounded-lg font-medium mt-2"
+              className="w-full py-2 border border-blue-600 hover:bg-blue-50 text-blue-600 rounded-lg font-medium mt-2"
               disabled={loading}
             >
               Continue as Guest
