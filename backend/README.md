@@ -12,8 +12,8 @@ This is the backend service for the URL Crawler app, built with Go, Gin, and MyS
 ## Prerequisites
 
 - Go 1.20+
-- MySQL server running
-- [Optional] Docker (for future containerized setup)
+- MySQL (image added in docker compose)
+- Docker
 
 ## Setup & Run
 
@@ -42,6 +42,9 @@ go run main.go
 
 ## API Endpoints
 
+- `POST /register` — for user sign up
+- `POST /login` — for user sign in
+- `POST /guest-login` — for guest user login without credentials
 - `POST /api/add-url` — Add a new URL to crawl
 - `GET /api/urls` — List URLs with pagination
 - `POST /api/start-crawl/:id` — Start crawling a URL by ID
