@@ -20,11 +20,13 @@ This is the backend service for the URL Crawler app, built with Go, Gin, and MyS
 1. Copy `.env.example` to `.env` and fill in your database credentials:
 
 ```
-DB\_USER=root
-DB\_PASSWORD=
-DB\_HOST=localhost
-DB\_PORT=3306
-DB\_NAME=url\_crawler
+DB_USER=root
+DB_PASSWORD=
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=url_crawler
+JWT_SECRET=supersecretkey
+RUNNING_IN_DOCKER=true
 
 ```
 
