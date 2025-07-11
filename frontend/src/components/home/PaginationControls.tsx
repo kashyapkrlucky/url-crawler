@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
 
 interface PaginationControlsProps {
@@ -14,21 +15,23 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   return (
     <div className="flex justify-center gap-2">
       <button
-        className="px-3 py-1 bg-blue-600 text-white rounded disabled:opacity-50"
+        className="p-1 border border-blue-600 text-blue-600 rounded disabled:opacity-50"
         disabled={currentPage === 1}
+        aria-label="Previous page"
         onClick={() => onPageChange(currentPage - 1)}
       >
-        Prev
+        <ChevronLeft />
       </button>
-      <span className="px-3 py-1 border border-gray-300 rounded w-25 flex items-center text-sm">
+      <span className="px-2 py-1 border border-gray-300 rounded w-25 flex items-center text-sm">
         Page {currentPage} of {pageCount}
       </span>
       <button
-        className="px-3 py-1 bg-blue-600 text-white rounded disabled:opacity-50"
+        className="p-1 border border-blue-600 text-blue-600 rounded disabled:opacity-50"
         disabled={currentPage === pageCount}
+        aria-label="Next page"
         onClick={() => onPageChange(currentPage + 1)}
       >
-        Next
+        <ChevronRight />
       </button>
     </div>
   );

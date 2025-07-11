@@ -1,11 +1,20 @@
-import { NavLink } from "react-router-dom";
-import { Home, ListChecks } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Home } from "lucide-react";
+import { useAuth } from "../../contexts/AuthProvider";
 
 const Header: React.FC = () => {
   const linkClass =
     "flex items-center gap-1 px-3 py-2 rounded hover:bg-gray-100 transition-colors";
 
   const activeClass = "text-blue-600";
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    localStorage.clear();
+    logout();
+    navigate("/sign-in");
+  };
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm">
@@ -22,15 +31,12 @@ const Header: React.FC = () => {
             <Home size={18} />
             Home
           </NavLink>
-          <NavLink
-            to="/results"
-            className={({ isActive }) =>
-              `${linkClass} ${isActive ? activeClass : "text-gray-700"}`
-            }
+          <button
+            onClick={handleLogout}
+            className="border-2 text-sm border-red-500 text-red-500 px-3 py-1 rounded hover:text-red-600"
           >
-            <ListChecks size={18} />
-            Results
-          </NavLink>
+            Logout
+          </button>
         </nav>
       </div>
     </header>

@@ -8,24 +8,36 @@ import (
 	"github.com/kashyapkrlucky/url-crawler/backend/config"
 	"github.com/kashyapkrlucky/url-crawler/backend/models"
 	"github.com/kashyapkrlucky/url-crawler/backend/services"
+	"gorm.io/gorm"
 )
 
 func AddUrl(c *gin.Context) {
-	// Define input that can be either single URL or array of URLs
-	var singleInput struct {
-		Url string `json:"url" binding:"required,url"`
+	var raw map[string]interface{}
+	if err := c.ShouldBindJSON(&raw); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON: " + err.Error()})
+		return
 	}
 
-	var batchInput struct {
-		Urls []string `json:"urls" binding:"required,dive,url"`
-	}
-
-	if err := c.ShouldBindJSON(&batchInput); err == nil {
-		// Batch mode
-		var urls []models.Url
-		for _, u := range batchInput.Urls {
-			urls = append(urls, models.Url{Url: u, Status: "queued"})
+	// Handle batch mode
+	if urlsRaw, exists := raw["urls"]; exists {
+		urlsSlice, ok := urlsRaw.([]interface{})
+		if !ok || len(urlsSlice) == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid or empty 'urls' array"})
+			return
 		}
+
+		var urls []models.Url
+		for _, u := range urlsSlice {
+			if str, ok := u.(string); ok {
+				urls = append(urls, models.Url{Url: str, Status: "queued"})
+			}
+		}
+
+		if len(urls) == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "No valid URLs found"})
+			return
+		}
+
 		if err := config.DB.Create(&urls).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -34,23 +46,27 @@ func AddUrl(c *gin.Context) {
 		return
 	}
 
-	// If batch parse failed, try single url
-	if err := c.ShouldBindJSON(&singleInput); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input: " + err.Error()})
+	// Handle single mode
+	if urlRaw, exists := raw["url"]; exists {
+		urlStr, ok := urlRaw.(string)
+		if !ok || urlStr == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid 'url'"})
+			return
+		}
+
+		url := models.Url{
+			Url:    urlStr,
+			Status: "queued",
+		}
+		if err := config.DB.Create(&url).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusCreated, url)
 		return
 	}
 
-	url := models.Url{
-		Url:    singleInput.Url,
-		Status: "queued",
-	}
-
-	if err := config.DB.Create(&url).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusCreated, url)
+	c.JSON(http.StatusBadRequest, gin.H{"error": "No 'url' or 'urls' field found"})
 }
 
 func GetUrls(c *gin.Context) {
@@ -91,6 +107,23 @@ func GetUrls(c *gin.Context) {
 		"hasNext": int64(offset+limitInt) < total,
 		"hasPrev": pageInt > 1,
 	})
+}
+
+func GetUrlById(c *gin.Context) {
+	id := c.Param("id")
+
+	var url models.Url
+
+	if err := config.DB.First(&url, id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{"error": "URL not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	c.JSON(http.StatusOK, url)
 }
 
 func StartCrawl(c *gin.Context) {
